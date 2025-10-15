@@ -8,7 +8,7 @@
 from circular_queue_class import CircularQueueOneSlotEmpty
 class RingBuffer:
     def __init__(self,capacity):
-        # 내부 배열에 한 칸 비움 방식의 링버퍼
+        # 내부 배열에 한 칸 비움 방식의 링버퍼 
         self.q = CircularQueueOneSlotEmpty(capacity=capacity)
 
     def is_empty(self):
@@ -23,9 +23,9 @@ class RingBuffer:
     def size(self):
         return self.q.size()
     
-    def display(self,msg="RinfBuffer:"):
+    def display(self,msg="RingBuffer:"):
         return self.q.display(msg + "내부 링버퍼의 상태")
-
+    
     def read(self):
         # 링버퍼에서 가장 오래된 데이터 삭제 연산
         return self.q.dequeue()
@@ -34,9 +34,9 @@ class RingBuffer:
         # 링버퍼에 포화상태일 때 새 데이터를 삽입 연산
         q = self.q
         q.rear = (q.rear + 1) % q.N
-        if q.rear == q.front : # full 이면(원형 큐인경우 오버플로우 발생)
+        if q.rear ==  q.front : # full 이면(원형 큐인경우 오버플로우 발생)
             q.front = (q.front + 1) % q.N # overwrite 발생(가장 오래된 데이터 drop)
-        q.array[q.rear] = item # 데이터 기록    
+        q.array[q.rear] = item  # 데이터 기록   
      
 #===============================
 # 링버퍼 테스트 프로그램
@@ -90,14 +90,13 @@ def quiz_3():
     rb.display("초기 링버퍼 상태")
 
     # 2. 공백상태의 링버퍼에 1,2,3,..., 20의 정수를 순서대로 삽입
-    for i in range(1, 21):
+    for i in range(1,21):
         rb.enqueue2(i)
-        print(i, end = " ")
-        rb.display("삽입 후: ")
+        print(i, end = " " )
+        rb.display("삽입 후 :")
 
-    # 3. 링버퍼에 남은 요소 관련 정보 출력
-    print(f"front={rb.q.front}, rear={rb.q.rear}, size={rb.q.size()}/{rb.q.capacity}")
-
+    #3 3. 링버퍼에 남은 요소 관련 정보 출력
+    print(f"front={rb.q.front}, rear={rb.q.rear}, size={rb.q.size()}/{rb.q.capacity}")    
 
 if __name__ == "__main__":
     # test_code_2_3()

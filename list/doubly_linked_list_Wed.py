@@ -13,30 +13,29 @@
     - popNext() : 현재 노드 뒤에 있는 노드 삭제
 """
 class DNode:
-    def __init__(self, elem, prev=None, next=None):
-        self.data = elem # 데이터 필드
-        self.prev = prev # 이전 노드를 가리키는 링크 필드
-        self.next = next # 다음 노드를 가리키는 링크 필드
-
-    def append(self, new): # 노드 기반 삽입 연산
-        # 현재 노드 (self)의 다음 노드로 새 노드(new) 삽입
-        if new is not None:
-            new.next = self.next # new의 다음 노드는 self노드의 다음 노드
-            new.prev = self # new의 이전 노드는 self
-            if new.next is not None:
-               new.next.prev = new
-            self.next = new
-
-    def popNext(self): # 노드 기반 삭제 연산
-        # 현재 노드 (self)의 다음 노드 삭제
-        deleted = self.next
-        if deleted is not None:
-            self.next = deleted.next
-            deleted.next = None # 연결 해제
-            if self.next is not None:
-               self.next.prev = self
-        return deleted
-        
+   def __init__(self,elem, prev=None, next=None):
+      self.data = elem #데이터 필드
+      self.prev = prev # 이전 노드를 가리키는 링크 필드
+      self.next = next # 다음 노드를 가리키는 링크 필드
+   
+   def append(self, new): # 노드 기반 삽입 연산
+      # 현재 노드 (self)의 다음 노드로 새 노드(new) 삽입
+      if new is not None:
+         new.next = self.next # new의 다음 노드는 self노드의 다음 노드
+         new.prev = self # new의 이전 노드는 self
+         if new.next is not None: 
+            new.next.prev = new 
+         self.next = new 
+    
+   def popNext(self): # 노드 기반 삭제 연산
+      # 현재 노드 (self)의 다음 노드 삭제
+      deleted = self.next
+      if deleted is not None: 
+         self.next = deleted.next
+         deleted.next = None # 연결 해제
+         if self.next is not None:
+            self.next.prev = self
+      return deleted      
 
     
 #===============================================================================================
@@ -49,19 +48,19 @@ class DNode:
         - isEmpty(): 리스트가 비어있는지 확인 
         - isFull(): 리스트가 가득 찼는지 확인
         - getEntry(pos): 특정 위치의 노드 데이터를 반환
-        - replace(pos, elem): 특정 위치의 노드의 데이터 변경
+        - replace(pos, elem) : 특정 위치의 노드의 데이터 변경
     - 연산에서 .link -> .next로 수정
         - getNode(pos): 특정 위치의 노드를 반환 
         - size(): 리스트의 크기를 반환
         - display(msg): 리스트의 내용을 출력
     - 나머지 연산       
         - insert(pos, elem): 특정 위치에 새 노드를 삽입
-        - delete(pos): 특정 위치의 노드를 삭제     
+        - delete(pos): 특정 위치의 노드를 삭제             
 """
 class DLinkedList:                       
     def __init__( self ):             
-      self.head = None     
-    # self.tail = None 
+      self.head = None
+      #self.tail = None      
 
     def isEmpty( self ):      
        return self.head == None       
@@ -81,85 +80,86 @@ class DLinkedList:
         if node != None :       
           node.data = elem          
         else :                 
-            return None                    
-    
+            return None     
+
     def getNode(self, pos): # pos 기반 연산
         # pos 위치에 있는 노드를 반환 
         # pos는 리스트의 인덱스 0부터 고려
         if pos < 0 : return None # pos는 유효하지않은 위치
-        if self.head == None: # 리스트가 빈 상태
+        if self.head == None: # 리스트가 빈 상태 
             return None
         else :
             ptr = self.head
             for _ in range(pos):
-                if ptr == None: # pos가 리스트보다 크기가 큰 경우(유효하지 않는 위치)
+                if ptr == None : # pos가 리스트보다 크기가 큰 경우(유효하지 않는 위치)
                     return None
                 ptr = ptr.next
-            return ptr
+            return ptr               
     
     def size(self):
-            # 리스트의 전체 노드의 개수
-            if self.head == None: # 현재 리스트가 공백이면
-                return 0
-            else:
-                ptr = self.head
-                count = 0
-                while  ptr is not None: 
-                    count += 1
-                    ptr= ptr.next
-                return count
+        # 리스트의 전체 노드의 개수
+        if self.head == None: # 현재 리스트가 공백이면
+            return 0
+        else :
+            ptr = self.head
+            count = 0
+            while ptr is not None: 
+                count += 1
+                ptr = ptr.next
+            return count
+        
+    def display(self, msg = "DLinkedList:"):
+        # 리스트의 내용을 출력
+        print(msg, end = ' ')
+        if self.head == None: # 현재 리스트가 공백이면
+            return None
+        else :
+            ptr = self.head
+            while ptr is not None: 
+                print(ptr.data, end = " <-> ")
+                ptr = ptr.next
+            print('None')
 
-    def display(self, msg = "DLinkedList"):
-            # 리스트의 내용을 출력
-            print(msg, end = '')
-            if self.head == None: # 현재 리스트가 공백이면
-                return None
-            else:
-                ptr = self.head
-                while  ptr is not None: 
-                    print(ptr.data, end = "<->")
-                    ptr= ptr.next
-                print("None")
+    def insert(self, pos, elem) : # 인덱스 기반 연산 
+        # pos 위치에서 새노드(elem) 삽입 연산
+        if pos < 0: 
+            raise ValueError("잘못된 위치 값!")
+        
+        new = DNode(elem) # 1. 새 노드 생성
+        before = self.getNode(pos-1) # 2. pos -1 위치의 노드 탐색
+        # 3. before 노드의 위치에 따라 구분
+        if before is None :
+            if pos == 0: # 1) 머리 노드로 삽입
+                new.next = self.head 
+                if new.next is not None:
+                    new.next.prev = new # new노드의 다음 노드의 이전 노드는 new
+                self.head = new # 머리 노드을 new 로 갱신
+                return 
+            else: # 2) pos가 리스트 범위에서 벗어남
+                raise IndexError("삽입할 위치가 유효하지 않음!")
+        else:  # 3) 중간 노드로 삽입
+            before.append(new)
 
-    def insert(self, pos, elem): # 인덱스 기반 연산
-            # pos 위치에서 새노드(elem) 삽입 연산
-            if pos < 0:
-                raise ValueError("잘못된 위치 값!")
-            
-            new = DNode(elem) # 1. 새 노드 생성
-            before = self.getNode(pos-1) # 2. pos -1 위치의 노드 탐색
-            # 3. before 노드의 위치에 따라 구분
-            if before is None:
-                if pos == 0: # 1. 머리 노드로 삽입
-                    new.next = self.head
-                    if new.next is not None:
-                        new.next.prev = new # new 노드의 다음 노드의 이전 노드는 new
-                    self.head = new # 머리 노드를 new로 갱신
-                    return 
-                else:  # 2. pos가 리스트 범위에서 벗어남
-                    raise IndexError("삽입할 위치가 유효하지 않음!")
-            else: # 3. 중간 노드로 삽입
-                before.append(new)
-
-    def delete(self, pos): # 인덱스 기반 연산
-            # pos 위치에서 해당 노드 삭제한 후 그 노드 반환
-            if pos < 0: 
-                raise ValueError("잘못된 위치 값!")
-            before = self.getNode(pos-1) # 1. 삭제 노드 이전의 노드 탐색
-            # 2. before 노드의 위치에 따라 구분
-            if before == None:
-                if pos == 0: # 1) 머리 노드로 삭제
-                    deleted = self.head
-                    if self.head is not None:      
-                        self.head = deleted.next
-                        self.head.prev = None
-                        deleted.prev = None # 연결 해제
-                        deleted.next = None # 연결 해제
-                    return deleted
-                else: # 2) pos가 리스트 범위에서 벗어남
-                    raise IndexError("삽입할 위치가 유효하지 않음!")
-            else: # 3) 중간 노드로 삭제
-                return before.popNext()
+    def delete(self, pos) : # 인덱스 기반 연산
+        # pos 위치에서 해당 노드 삭제한 후 그 노드 반환
+        if pos < 0 : 
+            raise ValueError("잘못된 위치 값!")
+        
+        before = self.getNode(pos-1) # 1. 삭제 노드 이전의 노드 탐색
+        # 2. before 노드의 위치에 따라 구분
+        if before == None :
+            if pos == 0: # 1) 머리 노드로 삭제
+                deleted = self.head
+                if self.head is not None:
+                    self.head = deleted.next
+                    self.head.prev = None
+                    deleted.prev = None # 연결 해제 
+                    deleted.next = None # 연결 해제
+                return deleted
+            else: # 2)pos가 리스트 범위에서 벗어남
+                raise IndexError("삽입할 위치가 유효하지 않음!")
+        else: # 3) 중간 노드로 삭제
+            return before.popNext()
 #=========================================================
 # 코드 3.3 단순연결리스트 테스트 프로그램 이용   
 #1. 연결 리스트 생성

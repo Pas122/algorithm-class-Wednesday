@@ -15,16 +15,16 @@
 # - 덱의 전단 : add_front, delete_front, get_front 연산은 각각 큐의 enqueue, dequeue, peek와  동일
 # - 덱의 후단 : add_rear, delete_rear, get_rear 연산은 각각 스택의 push, pop, peek과 동일
 # - 덱의 add_front, delete_rear, get_rear 연산은 별도 구현 필요
-#=======================================================================
+#=============================================
 # 원형덱 클래스 구현(객체지향프로그래밍기법 : 상속성)
-#=======================================================================
+#=============================================
 from circular_queue_class import CircularQueueOneSlotEmpty
 
-class CircularDeque(CircularQueueOneSlotEmpty):
+class CircularDeque(CircularQueueOneSlotEmpty) :
     def __init__(self, capacity):
-        super().__init__(capacity)
+        super().__init__(capacity) 
 
-    #self.is_empty(), self.is_full(), self.size(), self.display() : 상속
+    # self.is_empty(), self._is_full(), self.size(), self.display() : 상속
 
     def delete_front(self): # 전단에서 삭제
         return self.dequeue()
@@ -35,32 +35,27 @@ class CircularDeque(CircularQueueOneSlotEmpty):
     def add_rear(self, item): # 후단에서 item 삽입
         return self.enqueue(item)
     
-    # 원형덱에서만 있는 기능 : 자식 클래스 구현
-
+    # 원형덱에서만   있는 기능 : 자식 클래스 구현
     def add_front(self, item): # 전단에서 item 삽입
         if self.is_full():
             raise IndexError("원형덱이 포화 -> 삽입 불가")
         else:
             self.array[self.front] = item # 먼저 기록
-            self.front = (self.front - 1 + self.N) % self.N # front를 반시계 방향으로 한칸 회전
+            self.front = (self.front - 1 + self.N) % self.N # front를 반시계방향으로 한칸 회전
 
     def delete_rear(self): # 후단에서 삭제
         if self.is_empty():
             raise IndexError("원형덱이 빈상태 -> 삭제 불가")
         item = self.array[self.rear] # 가장 최근에 저장된 데이터 가리킴
         self.array[self.rear] = None # (option)
-        self.rear = (self.rear - 1 + self.N) % self.N # rear를 반시계 방향으로 회전
+        self.rear = (self.rear - 1 + self.N) % self.N # rear를 반시계방향으로 회전
         return item
-   
-    def get_rear(self): # 후단에서 최근에 저장된 데이터 조회
+    
+    def get_rear(self): # 뒤쪽에서 최근에 저장된 데이터 조회
         if self.is_empty():
             raise IndexError("원형덱이 빈 상태")
         else:
-            return self.array[self.rear] 
-
-
-
-
+            return self.array[self.rear]
 
 #===============================
 # 원형덱 테스트 프로그램
